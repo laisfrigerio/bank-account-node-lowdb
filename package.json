@@ -4,6 +4,7 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "node ./src/server.js",
+    "start": "node ./src/server.js",
     "test": "jest",
     "test:init": "jest --init",
     "test:coverage": "jest --coverage"
