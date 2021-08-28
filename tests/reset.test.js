@@ -1,13 +1,14 @@
 
 const http = require('supertest')
 const app = require('../src/app')
+const { TRANSACTION_TYPE } = require('../src/const')
 
 describe('reset data from db.json', () => {
-  it('check db.json is clean', async () => {
+  it('check db.json is cleaned', async () => {
     const payload = {
       destination: 100,
       amount: 100,
-      type: 'deposit'
+      type: TRANSACTION_TYPE.deposit
     }
 
     await http(app)
