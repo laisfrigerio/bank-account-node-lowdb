@@ -21,7 +21,7 @@ describe('Deposit', () => {
       .post('/event')
       .send(payload)
       .then((response) => {
-        expect(response.status).toEqual(200)
+        expect(response.status).toEqual(201)
         expect(response.body.success).toEqual(true)
       })
   })
@@ -37,7 +37,7 @@ describe('Deposit', () => {
       .post('/event')
       .send(payload)
       .then((response) => {
-        expect(response.status).toEqual(200)
+        expect(response.status).toEqual(201)
         expect(response.body.success).toEqual(true)
       })
 
@@ -45,25 +45,8 @@ describe('Deposit', () => {
       .post('/event')
       .send(payload)
       .then((response) => {
-        expect(response.status).toEqual(200)
+        expect(response.status).toEqual(201)
         expect(response.body.success).toEqual(true)
-      })
-  })
-
-  it('invalid type operation', async () => {
-    const payload = {
-      destination: 100,
-      amount: 100,
-      type: 'deposito'
-    }
-
-    await http(app)
-      .post('/event')
-      .send(payload)
-      .then((response) => {
-        expect(response.status).toEqual(400)
-        expect(response.body.success).toEqual(false)
-        expect(response.body.message).toEqual('Type operation is invalid')
       })
   })
 })

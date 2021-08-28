@@ -16,10 +16,6 @@ router.post('/event', async (req, res) => {
   const { body } = req
   const { type, amount } = body
 
-  if (!Object.keys(TRANSACTION_TYPE).includes(type)) {
-    return res.status(400).json({ success: false, message: 'Type operation is invalid' })
-  }
-
   if (type === TRANSACTION_TYPE.deposit) {
     const { destination } = body
     const account = findAccount(destination)
@@ -30,11 +26,22 @@ router.post('/event', async (req, res) => {
       db.get('accounts').find({ accountId: destination }).assign({ amount: account.amount + amount }).write()
     }
 
-    return res.status(200).json({ success: true })
+    return res.status(201).json({ success: true })
   }
 
   if (type === TRANSACTION_TYPE.transfer) {
-    return
+    const { destination, origin } = body
+    const accountOrigin = findAccount(origin)
+    const accountDestination = findAccount(destination)
+
+    if (!accountOrigin && !accountDestination) {
+      return res.status(404).json()
+    }
+
+    db.get('accounts').find({ accountId: origin }).assign({ amount: accountOrigin.amount - amount }).write()
+    db.get('accounts').find({ accountId: destination }).assign({ amount: accountDestination.amount + amount }).write()
+
+    return res.status(201).json()
   }
 
   if (type === TRANSACTION_TYPE.withdraw) {
@@ -45,12 +52,8 @@ router.post('/event', async (req, res) => {
       return res.status(404).json()
     }
 
-    if (account.amount < amount ) {
-      return res.status(400).json({ success: false, message: 'Insufficient funds' })
-    }
-
     db.get('accounts').find({ accountId: origin }).assign({ amount: account.amount - amount }).write()
-    return res.status(200).json({ success: true })
+    return res.status(201).json({ success: true })
   }
 })
 

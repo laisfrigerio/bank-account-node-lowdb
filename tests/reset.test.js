@@ -15,7 +15,7 @@ describe('reset data from db.json', () => {
       .post('/event')
       .send(payload)
       .then((response) => {
-        expect(response.status).toEqual(200)
+        expect(response.status).toEqual(201)
         expect(response.body.success).toEqual(true)
       })
 
