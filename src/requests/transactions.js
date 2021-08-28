@@ -38,7 +38,19 @@ router.post('/event', async (req, res) => {
   }
 
   if (type === TRANSACTION_TYPE.withdraw) {
-    return
+    const { origin } = body
+    const account = findAccount(origin)
+
+    if (!account) {
+      return res.status(404).json()
+    }
+
+    if (account.amount < amount ) {
+      return res.status(400).json({ success: false, message: 'Insufficient funds' })
+    }
+
+    db.get('accounts').find({ accountId: origin }).assign({ amount: account.amount - amount }).write()
+    return res.status(200).json({ success: true })
   }
 })
 
