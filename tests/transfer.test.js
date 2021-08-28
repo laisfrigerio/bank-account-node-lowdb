@@ -47,6 +47,7 @@ describe('Deposit', () => {
       .send(payloadTranfer)
       .then((response) => {
         expect(response.status).toEqual(201)
+        expect(response.body).toStrictEqual({ origin: { id: 100, balance: 50 }, destination: { id: 200, balance: 250 }})
       })
   })
 })

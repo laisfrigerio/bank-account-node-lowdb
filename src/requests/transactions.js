@@ -28,7 +28,12 @@ router.post('/event', async (req, res) => {
       db.get('accounts').find({ id: destination }).assign({ balance }).write()
     }
 
-    return res.status(201).json({ destination: { id: destination, balance }})
+    return res.status(201).json({
+      destination: {
+        id: destination,
+        balance
+      }
+    })
   }
 
   if (type === TRANSACTION_TYPE.transfer) {
@@ -40,10 +45,22 @@ router.post('/event', async (req, res) => {
       return res.status(404).json()
     }
 
-    db.get('accounts').find({ id: origin }).assign({ balance: accountOrigin.balance - amount }).write()
-    db.get('accounts').find({ id: destination }).assign({ balance: accountDestination.balance + amount }).write()
+    const balanceOrigin = accountOrigin.balance - amount
+    const balanceDestination = accountDestination.balance + amount
 
-    return res.status(201).json()
+    db.get('accounts').find({ id: origin }).assign({ balance: balanceOrigin }).write()
+    db.get('accounts').find({ id: destination }).assign({ balance: balanceDestination }).write()
+
+    return res.status(201).json({
+      destination: {
+        id: destination,
+        balance: balanceDestination
+      },
+      origin: {
+        id: origin,
+        balance: balanceOrigin
+      }
+    })
   }
 
   if (type === TRANSACTION_TYPE.withdraw) {
@@ -56,7 +73,13 @@ router.post('/event', async (req, res) => {
 
     const balance = account.balance - amount
     db.get('accounts').find({ id: origin }).assign({ balance }).write()
-    return res.status(201).json({ origin: { id: origin, balance }})
+
+    return res.status(201).json({
+      origin: {
+        id: origin,
+        balance
+      }
+    })
   }
 })
 
