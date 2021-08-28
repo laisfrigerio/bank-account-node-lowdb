@@ -23,7 +23,6 @@ describe('reset data from db.json', () => {
       .get('/accounts')
       .then((response) => {
         expect(response.status).toEqual(200)
-        console.log(response.body)
         expect(response.body.length).toEqual(1)
       })
 
@@ -38,7 +37,6 @@ describe('reset data from db.json', () => {
       .get('/accounts')
       .then((response) => {
         expect(response.status).toEqual(200)
-        console.log(response.body)
         expect(response.body.length).toEqual(0)
       })
   })
