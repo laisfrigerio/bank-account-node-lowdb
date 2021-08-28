@@ -1,3 +1,8 @@
 {
-  "accounts": []
+  "accounts": [
+    {
+      "id": 100,
+      "balance": 50
+    }
+  ]
 }
