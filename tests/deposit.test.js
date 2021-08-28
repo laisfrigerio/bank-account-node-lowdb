@@ -22,7 +22,7 @@ describe('Deposit', () => {
       .send(payload)
       .then((response) => {
         expect(response.status).toEqual(201)
-        expect(response.body.success).toEqual(true)
+        expect(response.body).toStrictEqual({ destination: { id: payload.destination, balance: payload.amount }})
       })
   })
 
@@ -38,7 +38,7 @@ describe('Deposit', () => {
       .send(payload)
       .then((response) => {
         expect(response.status).toEqual(201)
-        expect(response.body.success).toEqual(true)
+        expect(response.body).toStrictEqual({ destination: { id: payload.destination, balance: payload.amount }})
       })
 
     await http(app)
@@ -46,7 +46,7 @@ describe('Deposit', () => {
       .send(payload)
       .then((response) => {
         expect(response.status).toEqual(201)
-        expect(response.body.success).toEqual(true)
+        expect(response.body).toStrictEqual({ destination: { id: payload.destination, balance: payload.amount * 2 }})
       })
   })
 })

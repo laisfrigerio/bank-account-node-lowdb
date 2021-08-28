@@ -16,7 +16,6 @@ describe('reset data from db.json', () => {
       .send(payload)
       .then((response) => {
         expect(response.status).toEqual(201)
-        expect(response.body.success).toEqual(true)
       })
 
     await http(app)

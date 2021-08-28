@@ -4,9 +4,9 @@ const { TRANSACTION_TYPE } = require('../const')
 
 const router = express.Router()
 
-const findAccount = (accountId) => {
+const findAccount = (id) => {
   try {
-    return db.get('accounts').find({ accountId }).value()
+    return db.get('accounts').find({ id }).value()
   } catch (err) {
     return null
   }
@@ -19,14 +19,16 @@ router.post('/event', async (req, res) => {
   if (type === TRANSACTION_TYPE.deposit) {
     const { destination } = body
     const account = findAccount(destination)
+    let balance = amount
 
     if (!account) {
-      db.get('accounts').push({ accountId: destination, amount }).write()
+      db.get('accounts').push({ id: destination, balance }).write()
     } else {
-      db.get('accounts').find({ accountId: destination }).assign({ amount: account.amount + amount }).write()
+      balance = account.balance + amount
+      db.get('accounts').find({ id: destination }).assign({ balance }).write()
     }
 
-    return res.status(201).json({ success: true })
+    return res.status(201).json({ destination: { id: destination, balance } })
   }
 
   if (type === TRANSACTION_TYPE.transfer) {
@@ -38,8 +40,8 @@ router.post('/event', async (req, res) => {
       return res.status(404).json()
     }
 
-    db.get('accounts').find({ accountId: origin }).assign({ amount: accountOrigin.amount - amount }).write()
-    db.get('accounts').find({ accountId: destination }).assign({ amount: accountDestination.amount + amount }).write()
+    db.get('accounts').find({ id: origin }).assign({ balance: accountOrigin.balance - amount }).write()
+    db.get('accounts').find({ id: destination }).assign({ balance: accountDestination.balance + amount }).write()
 
     return res.status(201).json()
   }
@@ -52,7 +54,7 @@ router.post('/event', async (req, res) => {
       return res.status(404).json()
     }
 
-    db.get('accounts').find({ accountId: origin }).assign({ amount: account.amount - amount }).write()
+    db.get('accounts').find({ id: origin }).assign({ balance: account.balance - amount }).write()
     return res.status(201).json({ success: true })
   }
 })
