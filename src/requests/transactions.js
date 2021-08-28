@@ -28,7 +28,7 @@ router.post('/event', async (req, res) => {
       db.get('accounts').find({ id: destination }).assign({ balance }).write()
     }
 
-    return res.status(201).json({ destination: { id: destination, balance } })
+    return res.status(201).json({ destination: { id: destination, balance }})
   }
 
   if (type === TRANSACTION_TYPE.transfer) {
@@ -54,8 +54,9 @@ router.post('/event', async (req, res) => {
       return res.status(404).json()
     }
 
-    db.get('accounts').find({ id: origin }).assign({ balance: account.balance - amount }).write()
-    return res.status(201).json({ success: true })
+    const balance = account.balance - amount
+    db.get('accounts').find({ id: origin }).assign({ balance }).write()
+    return res.status(201).json({ origin: { id: origin, balance }})
   }
 })
 

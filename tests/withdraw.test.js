@@ -31,18 +31,14 @@ describe('Withdraw', () => {
       type: TRANSACTION_TYPE.withdraw
     }
 
-    await http(app)
-      .post('/event')
-      .send(payloadDeposit)
-      .then((response) => {
-        expect(response.status).toEqual(201)
-      })
+    await http(app).post('/event').send(payloadDeposit)
 
     await http(app)
       .post('/event')
       .send(payloadWithdraw)
       .then((response) => {
         expect(response.status).toEqual(201)
+        expect(response.body).toStrictEqual({ origin: { id: payloadWithdraw.origin, balance: 50 }})
       })
   })
 })
