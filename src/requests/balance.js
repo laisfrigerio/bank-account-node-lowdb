@@ -10,7 +10,7 @@ router.get('/balance', async (req, res) => {
     const account = db.get('accounts').find({ id: account_id }).value()
 
     if (!account) {
-      return res.status(404).json("0")
+      return res.status(404).json(0)
     }
 
     return res.status(200).json(account.balance)
