@@ -29,7 +29,7 @@ describe('reset data from db.json', () => {
       .post('/reset')
       .then((response) => {
         expect(response.status).toEqual(200)
-        expect(response.body.success).toEqual(true)
+        expect(response.body).toEqual("OK")
       })
 
     await http(app)
