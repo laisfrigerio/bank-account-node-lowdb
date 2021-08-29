@@ -1,12 +1,10 @@
 const express = require('express')
-const db = require('../database')
+const getAllBalance = require('../repositories/get-all-balance')
 
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  const accounts = db.get('accounts')
-    .value()
-
+  const accounts = getAllBalance()
   res.status(200).json([ ...accounts ])
 })
 
