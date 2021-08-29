@@ -1,8 +1,8 @@
 const express = require('express')
 
-const addTransaction = require('../repositories/add-transaction')
-const editTransaction = require('../repositories/edit-transaction')
-const getBalance = require('../repositories/get-balance')
+const deposit = require('../actions/deposit')
+const transfer = require('../actions/transfer')
+const withdraw = require('../actions/withdraw')
 
 const { TRANSACTION_TYPE } = require('../const')
 
@@ -10,72 +10,31 @@ const router = express.Router()
 
 router.post('/event', async (req, res) => {
   const { body } = req
-  const { type, amount } = body
+  const { type } = body
 
   if (type === TRANSACTION_TYPE.deposit) {
-    const { destination } = body
-    const account = getBalance(destination)
-    let balance = amount
-
-    if (!account) {
-      addTransaction({ id: destination, balance })
-    } else {
-      balance = account.balance + amount
-      editTransaction(destination, { balance })
-    }
-
-    return res.status(201).json({
-      destination: {
-        id: destination,
-        balance
-      }
-    })
+    response = deposit(body)
+    return res.status(201).json(response)
   }
 
   if (type === TRANSACTION_TYPE.transfer) {
-    const { destination, origin } = body
-    const accountOrigin = getBalance(origin)
-    const accountDestination = getBalance(destination)
+    const response = transfer(body)
 
-    if (!accountOrigin || !accountDestination) {
+    if (!response) {
       return res.status(404).json(0)
     }
 
-    const balanceOrigin = accountOrigin.balance - amount
-    const balanceDestination = accountDestination.balance + amount
-
-    editTransaction(origin, { balance: balanceOrigin })
-    editTransaction(destination, { balance: balanceDestination })
-
-    return res.status(201).json({
-      destination: {
-        id: destination,
-        balance: balanceDestination
-      },
-      origin: {
-        id: origin,
-        balance: balanceOrigin
-      }
-    })
+    return res.status(201).json(response)
   }
 
   if (type === TRANSACTION_TYPE.withdraw) {
-    const { origin } = body
-    const account = getBalance(origin)
+    const response = withdraw(body)
 
-    if (!account) {
+    if (!response) {
       return res.status(404).json(0)
     }
 
-    const balance = account.balance - amount
-    editTransaction(origin, { balance })
-
-    return res.status(201).json({
-      origin: {
-        id: origin,
-        balance
-      }
-    })
+    return res.status(201).json(response)
   }
 })
 
