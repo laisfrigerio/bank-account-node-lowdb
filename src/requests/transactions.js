@@ -41,7 +41,7 @@ router.post('/event', async (req, res) => {
     const accountOrigin = findAccount(origin)
     const accountDestination = findAccount(destination)
 
-    if (!accountOrigin && !accountDestination) {
+    if (!accountOrigin || !accountDestination) {
       return res.status(404).json(0)
     }
 
