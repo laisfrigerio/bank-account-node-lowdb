@@ -10,7 +10,7 @@ Bank Account API with lowDb
 
 ### Transaction
 
-- POST `/event`: add a new transaction (deposit, withdraw and transfer)
+- POST `/event`: add a new transaction (deposit, withdraw or transfer)
 
 ### Balance
 
