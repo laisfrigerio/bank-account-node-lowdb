@@ -42,7 +42,7 @@ router.post('/event', async (req, res) => {
     const accountDestination = findAccount(destination)
 
     if (!accountOrigin && !accountDestination) {
-      return res.status(404).json()
+      return res.status(404).json(0)
     }
 
     const balanceOrigin = accountOrigin.balance - amount
@@ -68,7 +68,7 @@ router.post('/event', async (req, res) => {
     const account = findAccount(origin)
 
     if (!account) {
-      return res.status(404).json()
+      return res.status(404).json(0)
     }
 
     const balance = account.balance - amount
