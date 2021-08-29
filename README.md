@@ -4,25 +4,23 @@ Bank Account API with lowDb
 
 ## API 🛣️
 
-Available endponts:
-
 ### Reset
 
-- POST `/reset`: to clean database (db.json)
+- POST `/reset`: clean database (db.json)
 
 ### Transaction
 
-- POST `/event`: to add a new transaction (deposit, withdraw and transfer)
+- POST `/event`: add a new transaction (deposit, withdraw and transfer)
 
-### Account amount
+### Balance
 
 
-- GET `/balance?account_id=1`: get details from an account
+- GET `/balance?account_id=1`: get amount from an account
 
 ## 🛠️ Stack
 
 - NodeJS: v14
-- Express: to control routes
+- Express: control routes
 - lowDb: json database
 - Jest and supertest
 
