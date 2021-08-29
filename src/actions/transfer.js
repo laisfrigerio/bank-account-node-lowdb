@@ -1,3 +1,4 @@
+const addTransaction = require('../repositories/add-transaction')
 const editTransaction = require('../repositories/edit-transaction')
 const getBalance = require('../repositories/get-balance')
 
@@ -5,10 +6,15 @@ const transfer = (data) => {
   const { amount, destination, origin } = data
 
   const accountOrigin = getBalance(origin)
-  const accountDestination = getBalance(destination)
+  let accountDestination = getBalance(destination)
 
-  if (!accountOrigin || !accountDestination) {
+  if (!accountOrigin) {
     return null
+  }
+
+  if (!accountDestination) {
+    accountDestination = { id: destination, balance: 0 }
+    addTransaction({ ...accountDestination })
   }
 
   const balanceOrigin = accountOrigin.balance - amount
