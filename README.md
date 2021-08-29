@@ -2,27 +2,14 @@
 
 Bank Account API with lowDb
 
-## API 🛣️
-
-### Reset
-
-- POST `/reset`: clean database (db.json)
-
-### Transaction
-
-- POST `/event`: add a new transaction (deposit, withdraw or transfer)
-
-### Balance
-
-
-- GET `/balance?account_id=1`: get amount from an account
-
 ## 🛠️ Stack
 
 - NodeJS: v14
-- Express: control routes
+- yarn: v1.22.5
+- Express
 - lowDb: json database
 - Jest and supertest
+- git flow (feature, release, hotfix)
 
 ## Run
 
@@ -37,6 +24,20 @@ Bank Account API with lowDb
     yarn test
     yarn test:coverage
 ```
+
+## API 🛣️
+
+### Reset
+
+- POST `/reset`: clean database (db.json)
+
+### Transaction
+
+- POST `/event`: add a new transaction (deposit, withdraw or transfer)
+
+### Balance
+
+- GET `/balance?account_id=1`: get amount from an account
 
 ## :woman: Author
 
