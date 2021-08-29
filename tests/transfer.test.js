@@ -20,6 +20,31 @@ describe('Deposit', () => {
       })
   })
 
+  it('Transfer from existing account, but destination non-exist', async () => {
+    const accountOrigin = {
+      destination: 100,
+      amount: 100,
+      type: TRANSACTION_TYPE.deposit
+    }
+
+    const payloadTranfer = {
+      origin: 100,
+      destination: 200,
+      amount: 50,
+      type: TRANSACTION_TYPE.transfer
+    }
+
+    await http(app).post('/event').send(accountOrigin)
+
+    await http(app)
+      .post('/event')
+      .send(payloadTranfer)
+      .then((response) => {
+        expect(response.status).toEqual(404)
+        expect(response.body).toEqual(0)
+      })
+  })
+
   it('Transfer from existing account', async () => {
     const accountOrigin = {
       destination: 100,
