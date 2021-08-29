@@ -1,9 +1,10 @@
 {
   "name": "bank-account-node-lowdb",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "main": "src/server.js",
   "scripts": {
     "dev": "node ./src/server.js",
+    "start": "node ./src/server.js",
     "test": "jest",
     "test:init": "jest --init",
     "test:coverage": "jest --coverage"

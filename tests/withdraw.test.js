@@ -15,6 +15,7 @@ describe('Withdraw', () => {
       .send(payload)
       .then((response) => {
         expect(response.status).toEqual(404)
+        expect(response.body).toEqual(0)
       })
   })
 
